@@ -1,0 +1,3 @@
+# {n, e, r, o, d, u}
+
+Put "unordered" into a set...
