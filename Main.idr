@@ -3,12 +3,27 @@ module Main
 %default total
 
 langName : String
-langName = "LonelyAlone> "
+langName = "LonelyAloneLang> "
+
+data Token = TokEq | TokColon | TokId String
+
+tokenize : List Char -> List Token
+
+data LangType = TypeType | VoidType
+
+data LangVal = TypeAsVal LangType
+
+data AST = TypeDecl String LangType | ValAssn String LangVal
+
+parseWord : List Token -> AST
+parseWord xs = ?todo
+
+parseLine : List Token -> AST
+parseLine xs = ?todo2
+
+printAst : AST -> String
 
 data ReplCmd = TypeOf String
-
-parseLine : List Char -> String
-parseLine xs = "TODO"
 
 parseReplCmd : List Char -> Either String ReplCmd
 parseReplCmd ('t' :: (' ' :: xs)) = Right $ TypeOf $ pack xs
@@ -24,7 +39,7 @@ readEvalPrint = readEvalPrint_ . unpack where
   readEvalPrint_ : List Char -> String
   readEvalPrint_ [] = ""
   readEvalPrint_ (':' :: xs) = either id evalReplCmd $ parseReplCmd xs
-  readEvalPrint_ (x :: xs) = parseLine (x :: xs)
+  readEvalPrint_ (x :: xs) = printAst $ parseLine $ tokenize (x :: xs)
 
 
 partial
