@@ -1,27 +1,26 @@
 module Main
 
+import Data.SortedMap
+
 %default total
 
 langName : String
 langName = "LonelyAloneLang> "
 
-data Token = TokEq | TokColon | TokId String
+typeMap : SortedMap String String
+typeMap = fromList $
+  [ ("Void", "Type")
+  , ("Type", "Type 1")
+  ]
 
-tokenize : List Char -> List Token
+data Expr = Iden String
 
-data LangType = TypeType | VoidType
+parseExpr : List Char -> Expr
+parseExpr xs = Iden $ pack xs
 
-data LangVal = TypeAsVal LangType
-
-data AST = TypeDecl String LangType | ValAssn String LangVal
-
-parseWord : List Token -> AST
-parseWord xs = ?todo
-
-parseLine : List Token -> AST
-parseLine xs = ?todo2
-
-printAst : AST -> String
+printExpr : Expr -> String
+printExpr (Iden x) =
+  fromMaybe "ERROR: unrecognized value" $ map (\t => x ++ " : " ++ t) $ lookup x typeMap
 
 data ReplCmd = TypeOf String
 
@@ -30,16 +29,15 @@ parseReplCmd ('t' :: (' ' :: xs)) = Right $ TypeOf $ pack xs
 parseReplCmd _ = Left "Unrecognized REPL command"
 
 evalReplCmd : ReplCmd -> String
-evalReplCmd (TypeOf "Void") = "Type"
-evalReplCmd (TypeOf "Type") = "Type 1"
-evalReplCmd (TypeOf _) = "ERROR: Type Unrecognized"
+evalReplCmd (TypeOf name) =
+  fromMaybe "ERROR: unrecognized type" $ lookup name typeMap
 
 readEvalPrint : String -> String
 readEvalPrint = readEvalPrint_ . unpack where
   readEvalPrint_ : List Char -> String
   readEvalPrint_ [] = ""
   readEvalPrint_ (':' :: xs) = either id evalReplCmd $ parseReplCmd xs
-  readEvalPrint_ (x :: xs) = printAst $ parseLine $ tokenize (x :: xs)
+  readEvalPrint_ (x :: xs) = printExpr $ parseExpr (x :: xs)
 
 
 partial
