@@ -5,7 +5,7 @@ import Data.SortedMap
 %default total
 
 langName : String
-langName = "LonelyAloneLang> "
+langName = "LonelyLang> "
 
 typeMap : SortedMap String String
 typeMap = fromList $

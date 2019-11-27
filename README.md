@@ -13,3 +13,7 @@ lines of code.
 Not exactly Turing Complete, but shall we say "Void complete". You can use
 a REPL command to query the type of Void, and the type of Type; and "Void" and
 "Type" are valid values, and ergo expressions. That is all.
+
+# Lang 2: LonelyLang
+
+Simple enhancements on top of LonelyAloneLang.
